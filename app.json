@@ -1,5 +1,6 @@
 {
   "expo": {
+    "scheme": "destiny-loadout-builder",
     "name": "destiny-loadout-builder",
     "slug": "destiny-loadout-builder",
     "version": "1.0.0",
@@ -13,9 +14,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
