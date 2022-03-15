@@ -1,6 +1,6 @@
 import { API_KEY } from "react-native-dotenv";
 import { fetch } from "./api";
-import { DESTINY_DEFINITIONS } from "./bungieApiDefinitions";
+import { DESTINY_DEFINITIONS, EXOTIC_TYPE } from "./bungieApiDefinitions";
 
 const ROOT_ENDPOINT = "https://www.bungie.net/Platform";
 
@@ -24,6 +24,7 @@ const getManifest = async (entityType, hashIdentifier) => {
           itemType,
           itemSubType,
           itemTypeDisplayName,
+          inventory,
         } = res.body.Response;
 
         return {
@@ -31,6 +32,7 @@ const getManifest = async (entityType, hashIdentifier) => {
           itemTypeDisplayName,
           itemType,
           itemSubType,
+          isExotic: inventory?.tierType === EXOTIC_TYPE,
         };
       } else {
         return res.body;

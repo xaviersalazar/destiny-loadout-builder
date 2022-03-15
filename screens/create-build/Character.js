@@ -26,7 +26,7 @@ const CharacterModal = styled(Modal)`
   height: 100%;
   width: 100%;
   position: relative;
-  top: 92px;
+  top: 108px;
 `;
 
 const CloseButton = styled(Button)`
@@ -98,7 +98,7 @@ export const CharacterScreen = ({
     if (selectedCharacter) {
       getEquippedItems();
     }
-  }, []);
+  }, [selectedCharacter]);
 
   const setEquippedItem = (itemSubType, item) => {
     switch (itemSubType) {
@@ -140,7 +140,7 @@ export const CharacterScreen = ({
       async ({ itemHash, overrideStyleItemHash, state }) => {
         await getManifest(DESTINY_INVENTORY_ITEM, itemHash).then(
           async (item) => {
-            if (ARMOR_TYPES.includes(item.itemSubType)) {
+            if (ARMOR_TYPES.indexOf(item.itemSubType) !== -1) {
               if (overrideStyleItemHash) {
                 await getManifest(
                   DESTINY_INVENTORY_ITEM,
@@ -148,15 +148,15 @@ export const CharacterScreen = ({
                 ).then((itemOrnament) => {
                   setEquippedItem(item.itemSubType, {
                     ...itemOrnament,
-                    masterWorked: state === 4,
+                    masterWorked: state === 4 || state === 5,
                   });
                 });
+              } else {
+                setEquippedItem(item.itemSubType, {
+                  ...item,
+                  masterWorked: state === 4 || state === 5,
+                });
               }
-            } else {
-              setEquippedItem(item.itemSubType, {
-                ...item,
-                masterWorked: state === 4,
-              });
             }
           }
         );
@@ -195,19 +195,13 @@ export const CharacterScreen = ({
             )}
           </CharacterStats>
         </UserInfoContainer>
-        {currentlyEquippedHelmetArmor &&
-          currentlyEquippedGauntletsArmor &&
-          currentlyEquippedChestArmor &&
-          currentlyEquippedLegArmor &&
-          currentlyEquippedClassArmor && (
-            <EquippedItems
-              currentlyEquippedHelmetArmor={currentlyEquippedHelmetArmor}
-              currentlyEquippedGauntletsArmor={currentlyEquippedGauntletsArmor}
-              currentlyEquippedChestArmor={currentlyEquippedChestArmor}
-              currentlyEquippedLegArmor={currentlyEquippedLegArmor}
-              currentlyEquippedClassArmor={currentlyEquippedClassArmor}
-            />
-          )}
+        <EquippedItems
+          currentlyEquippedHelmetArmor={currentlyEquippedHelmetArmor}
+          currentlyEquippedGauntletsArmor={currentlyEquippedGauntletsArmor}
+          currentlyEquippedChestArmor={currentlyEquippedChestArmor}
+          currentlyEquippedLegArmor={currentlyEquippedLegArmor}
+          currentlyEquippedClassArmor={currentlyEquippedClassArmor}
+        />
       </Screen>
     </CharacterModal>
   );

@@ -5,4 +5,6 @@ export const COLORS = {
   nonSelectedText: "#e1e1e6",
   background: "#f4f4f8",
   white: "#ffffff",
+  itemBackground: "#523065",
+  exoticBackground: "#ceae33",
 };

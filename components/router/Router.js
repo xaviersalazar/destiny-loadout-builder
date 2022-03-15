@@ -19,14 +19,14 @@ const UserInfoContainer = styled(Layout)`
   align-items: center;
   position: relative;
   top: 0;
-  height: 92px;
+  height: 108px;
   background-color: ${COLORS.text};
 `;
 
 const UserName = styled(Text)`
   color: ${COLORS.white};
   position: relative;
-  top: 48px;
+  top: 60px;
 `;
 
 export const Router = () => {
@@ -37,7 +37,7 @@ export const Router = () => {
   return (
     <>
       <UserInfoContainer>
-        <UserName category="h4">{user?.bungie?.displayName}</UserName>
+        <UserName category="h5">{user?.bungie?.displayName}</UserName>
       </UserInfoContainer>
       <Container>
         <Navigation />

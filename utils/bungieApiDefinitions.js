@@ -57,6 +57,8 @@ export const CHARACTER_DEFINITIONS = {
 
 export const ARMOR_TYPES = [26, 27, 28, 29, 30];
 
+export const EXOTIC_TYPE = 6;
+
 export const DESTINY_DEFINITIONS = {
   DESTINY_INVENTORY_ITEM: "DestinyInventoryItemDefinition",
 };
