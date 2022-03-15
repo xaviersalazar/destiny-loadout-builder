@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Image, TouchableOpacity } from "react-native";
 import { Text } from "@ui-kitten/components";
 import { Screen } from "../../components/screen/Screen";
+import SkeletonContent from "react-native-skeleton-content";
 import { CharacterScreen } from "./Character";
 import { getDestinyCharacters } from "../../utils/bungieApi";
 import { useAuth } from "../../utils/useAuth";
@@ -108,42 +109,64 @@ export const CreateBuild = () => {
           To add or modify a build
         </HeaderText>
       </Header>
-      {characters.map((character) => (
-        <TouchableOpacity
-          key={character.characterId}
-          onPress={() => {
-            setSelectedCharacter(character);
-            setIsCharacterScreenVisible(true);
-          }}
-        >
-          <CharacterContainer character={character.type}>
-            <CharacterInfo>
-              <CharacterLightLevel category="label">
-                {character.light}
-              </CharacterLightLevel>
-              <Text category="h2">{character.type}</Text>
-            </CharacterInfo>
-            <CharacterStats>
-              {Object.keys(character.stats).map(
-                (stat) =>
-                  STATS_DEFINITION[stat] && (
-                    <View key={STATS_DEFINITION[stat]?.name}>
-                      <StatImage
-                        source={{ uri: `${STATS_DEFINITION[stat]?.iconPath}` }}
-                        style={{
-                          tintColor: `${COLORS.white}`,
-                        }}
-                      />
-                      <Stat key={stat} category="label">
-                        {character.stats[stat]}
-                      </Stat>
-                    </View>
-                  )
-              )}
-            </CharacterStats>
-          </CharacterContainer>
-        </TouchableOpacity>
-      ))}
+      {characters && characters.length > 0
+        ? characters.map((character) => (
+            <TouchableOpacity
+              key={character.characterId}
+              onPress={() => {
+                setSelectedCharacter(character);
+                setIsCharacterScreenVisible(true);
+              }}
+            >
+              <CharacterContainer character={character.type}>
+                <CharacterInfo>
+                  <CharacterLightLevel category="label">
+                    {character.light}
+                  </CharacterLightLevel>
+                  <Text category="h2">{character.type}</Text>
+                </CharacterInfo>
+                <CharacterStats>
+                  {Object.keys(character.stats).map(
+                    (stat) =>
+                      STATS_DEFINITION[stat] && (
+                        <View key={STATS_DEFINITION[stat]?.name}>
+                          <StatImage
+                            source={{
+                              uri: `${STATS_DEFINITION[stat]?.iconPath}`,
+                            }}
+                            style={{
+                              tintColor: `${COLORS.white}`,
+                            }}
+                          />
+                          <Stat key={stat} category="label">
+                            {character.stats[stat]}
+                          </Stat>
+                        </View>
+                      )
+                  )}
+                </CharacterStats>
+              </CharacterContainer>
+            </TouchableOpacity>
+          ))
+        : [1, 2, 3].map((i) => (
+            <SkeletonContent
+              key={i}
+              isLoading={!characters || characters.length <= 0}
+              containerStyle={{
+                width: "100%",
+                marginTop: 12,
+                marginBottom: 12,
+              }}
+              layout={[
+                {
+                  key: `${i}-character`,
+                  width: "100%",
+                  height: 90,
+                  borderRadius: 8,
+                },
+              ]}
+            />
+          ))}
       {isCharacterScreenVisible && (
         <CharacterScreen
           selectedCharacter={selectedCharacter}

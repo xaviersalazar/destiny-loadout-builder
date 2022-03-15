@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Image, View } from "react-native";
 import { Button, Text } from "@ui-kitten/components";
+import SkeletonContent from "react-native-skeleton-content";
 import { uniqueId } from "lodash";
 import { BUNGIE_PREFIX_URL } from "../../utils/bungieApiDefinitions";
 import { COLORS } from "../../theme";
@@ -61,34 +62,80 @@ export const EquippedItems = ({
   currentlyEquippedLegArmor,
   currentlyEquippedClassArmor,
 }) => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (
+      currentlyEquippedHelmetArmor &&
+      currentlyEquippedGauntletsArmor &&
+      currentlyEquippedChestArmor &&
+      currentlyEquippedLegArmor &&
+      currentlyEquippedClassArmor
+    ) {
+      setIsLoading(false);
+    }
+  }, [
+    currentlyEquippedHelmetArmor,
+    currentlyEquippedGauntletsArmor,
+    currentlyEquippedChestArmor,
+    currentlyEquippedLegArmor,
+    currentlyEquippedClassArmor,
+  ]);
+
   return (
     <>
-      {[
-        [currentlyEquippedHelmetArmor, currentlyEquippedGauntletsArmor],
-        [currentlyEquippedChestArmor, currentlyEquippedLegArmor],
-        [currentlyEquippedClassArmor],
-      ].map((row) => (
-        <EquippedItemsContainer key={uniqueId("row_")}>
-          {row.map((armor) => (
-            <EquippedItemContainer key={uniqueId("armor_")}>
-              <EquippedItem
-                masterWorked={armor?.masterWorked}
-                isExotic={armor?.isExotic}
-              >
-                <ArmorImage
-                  source={{
-                    uri: `${BUNGIE_PREFIX_URL}${armor?.displayProperties.icon}`,
-                  }}
-                />
-              </EquippedItem>
-              <ArmorName category="p2">
-                {armor?.displayProperties.name}
-              </ArmorName>
-            </EquippedItemContainer>
+      {!isLoading ? (
+        <>
+          {[
+            [currentlyEquippedHelmetArmor, currentlyEquippedGauntletsArmor],
+            [currentlyEquippedChestArmor, currentlyEquippedLegArmor],
+            [currentlyEquippedClassArmor],
+          ].map((row) => (
+            <EquippedItemsContainer key={uniqueId("row_")}>
+              {row.map((armor) => (
+                <EquippedItemContainer key={uniqueId("armor_")}>
+                  <EquippedItem
+                    masterWorked={armor?.masterWorked}
+                    isExotic={armor?.isExotic}
+                  >
+                    <ArmorImage
+                      source={{
+                        uri: `${BUNGIE_PREFIX_URL}${armor?.displayProperties.icon}`,
+                      }}
+                    />
+                  </EquippedItem>
+                  <ArmorName category="p2">
+                    {armor?.displayProperties.name}
+                  </ArmorName>
+                </EquippedItemContainer>
+              ))}
+            </EquippedItemsContainer>
           ))}
-        </EquippedItemsContainer>
-      ))}
-      <SaveButton disabled={true}>Save</SaveButton>
+          <SaveButton disabled={true}>Save</SaveButton>
+        </>
+      ) : (
+        [[1, 2], [3, 4], [5]].map((row) => (
+          <EquippedItemsContainer key={uniqueId("row_")}>
+            {row.map((i) => (
+              <SkeletonContent
+                key={i}
+                isLoading={isLoading}
+                containerStyle={{
+                  backgroundColor: COLORS.background,
+                }}
+                layout={[
+                  {
+                    key: `${i}-item`,
+                    height: 80,
+                    width: 80,
+                    borderRadius: 12,
+                  },
+                ]}
+              />
+            ))}
+          </EquippedItemsContainer>
+        ))
+      )}
     </>
   );
 };
