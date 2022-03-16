@@ -79,6 +79,7 @@ export const CharacterScreen = ({
   selectedCharacter,
   isCharacterScreenVisible,
   setIsCharacterScreenVisible,
+  navigation,
 }) => {
   const { user } = useAuth();
   const { characterId, type, light, stats } = selectedCharacter;

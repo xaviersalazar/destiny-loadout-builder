@@ -11,6 +11,9 @@ import {
   STATS_DEFINITION,
 } from "../../utils/bungieApiDefinitions";
 import { COLORS } from "../../theme";
+import warlock from "../../assets/warlock.png";
+import hunter from "../../assets/hunter.png";
+import titan from "../../assets/titan.png";
 import styled from "styled-components";
 
 const characterColors = {
@@ -36,6 +39,16 @@ const CharacterContainer = styled(View)`
   border-radius: 8px;
   padding: 12px;
   margin: 12px 0;
+  overflow: hidden;
+`;
+
+const CharacterEmblem = styled(Image)`
+  height: 150px;
+  width: 180px;
+  position: absolute;
+  top: -26px;
+  left: -30px;
+  opacity: 0.08;
 `;
 
 const CharacterInfo = styled(View)`
@@ -57,6 +70,7 @@ const StatImage = styled(Image)`
   height: 18px;
   width: 18px;
   margin: 0 auto;
+  opacity: 0.8;
 `;
 
 const Stat = styled(Text)`
@@ -66,6 +80,7 @@ const Stat = styled(Text)`
 
 export const CreateBuild = () => {
   const { user } = useAuth();
+
   const [characters, setCharacters] = useState([]);
   const [selectedCharacter, setSelectedCharacter] = useState(null);
   const [isCharacterScreenVisible, setIsCharacterScreenVisible] =
@@ -86,14 +101,17 @@ export const CreateBuild = () => {
     const allCharacters = [
       {
         type: "Warlock",
+        emblem: warlock,
         ...Response.characters.data[CHARACTER_DEFINITIONS.Warlock],
       },
       {
         type: "Hunter",
+        emblem: hunter,
         ...Response.characters.data[CHARACTER_DEFINITIONS.Hunter],
       },
       {
         type: "Titan",
+        emblem: titan,
         ...Response.characters.data[CHARACTER_DEFINITIONS.Titan],
       },
     ];
@@ -119,6 +137,7 @@ export const CreateBuild = () => {
               }}
             >
               <CharacterContainer character={character.type}>
+                <CharacterEmblem source={character.emblem} />
                 <CharacterInfo>
                   <CharacterLightLevel category="label">
                     {character.light}

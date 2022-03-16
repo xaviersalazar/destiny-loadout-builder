@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Image, View } from "react-native";
+import { Image, View, TouchableOpacity } from "react-native";
 import { Button, Text } from "@ui-kitten/components";
 import SkeletonContent from "react-native-skeleton-content";
 import { uniqueId } from "lodash";
@@ -16,7 +16,7 @@ const EquippedItemsContainer = styled(View)`
   justify-content: space-around;
 `;
 
-const EquippedItemContainer = styled(View)`
+const EquippedItemContainer = styled(TouchableOpacity)`
   background: ${COLORS.background};
 `;
 
@@ -93,7 +93,10 @@ export const EquippedItems = ({
           ].map((row) => (
             <EquippedItemsContainer key={uniqueId("row_")}>
               {row.map((armor) => (
-                <EquippedItemContainer key={uniqueId("armor_")}>
+                <EquippedItemContainer
+                  key={uniqueId("armor_")}
+                  onPress={() => console.log("pressed me!")}
+                >
                   <EquippedItem
                     masterWorked={armor?.masterWorked}
                     isExotic={armor?.isExotic}
@@ -104,7 +107,7 @@ export const EquippedItems = ({
                       }}
                     />
                   </EquippedItem>
-                  <ArmorName category="p2">
+                  <ArmorName category="c1">
                     {armor?.displayProperties.name}
                   </ArmorName>
                 </EquippedItemContainer>
